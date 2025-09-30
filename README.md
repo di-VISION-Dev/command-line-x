@@ -1,2 +1,2 @@
 # command-line-x
-Extension library for System.CommanLine
+Extension library for System.CommandLine
