@@ -81,8 +81,8 @@ public class CommandLineHostedServiceTest
         var service = new CommandLineHostedService(invoker, new CommandLineInvocationContext(["noarg"]), lifetime
             , _serviceProvider.GetRequiredService<ILogger<CommandLineHostedService>>());
 
-        await service.StartAsync(TestContext.CancellationTokenSource.Token);
-        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationTokenSource.Token);
+        await service.StartAsync(TestContext.CancellationToken);
+        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationToken);
         finished.Should().BeTrue();
         service.Result.Should().Be(84);
     }
@@ -99,8 +99,8 @@ public class CommandLineHostedServiceTest
         var service = new CommandLineHostedService(invoker, new CommandLineInvocationContext(["onearg", "42"]), lifetime
             , _serviceProvider.GetRequiredService<ILogger<CommandLineHostedService>>());
 
-        await service.StartAsync(TestContext.CancellationTokenSource.Token);
-        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationTokenSource.Token);
+        await service.StartAsync(TestContext.CancellationToken);
+        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationToken);
         finished.Should().BeTrue();
         service.Result.Should().Be(42);
     }
@@ -117,8 +117,8 @@ public class CommandLineHostedServiceTest
         var lifetime = new HostApplicationLifetimeMock();
         var service = new CommandLineHostedService(invoker, new CommandLineInvocationContext(["oneopt", "-o", "error"]), lifetime, logger);
 
-        await service.StartAsync(TestContext.CancellationTokenSource.Token);
-        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationTokenSource.Token);
+        await service.StartAsync(TestContext.CancellationToken);
+        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationToken);
         finished.Should().BeTrue();
         service.Result.Should().Be(-2);
 

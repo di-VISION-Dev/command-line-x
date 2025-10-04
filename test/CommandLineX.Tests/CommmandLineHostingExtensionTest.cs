@@ -167,7 +167,7 @@ public class CommmandLineHostingExtensionTest
 
         using var host = builder.Build();
         host.Should().NotBeNull();
-        await host.Invoking(async x => await x.RunCommandLineAsync(["onearg", "66"], TestContext.CancellationTokenSource.Token)).Should().ThrowAsync<InvalidOperationException>();
+        await host.Invoking(async x => await x.RunCommandLineAsync(["onearg", "66"], TestContext.CancellationToken)).Should().ThrowAsync<InvalidOperationException>();
     }
 
     [TestMethod]
@@ -186,7 +186,7 @@ public class CommmandLineHostingExtensionTest
 
         using var host = builder.Build();
         host.Should().NotBeNull();
-        var runResult = await host.RunCommandLineAsync(["argandopt", "E7AB96D2-C535-416B-959D-6DFC4F2F50AB", "-f", "testfile"], TestContext.CancellationTokenSource.Token);
+        var runResult = await host.RunCommandLineAsync(["argandopt", "E7AB96D2-C535-416B-959D-6DFC4F2F50AB", "-f", "testfile"], TestContext.CancellationToken);
         runResult.Should().Be(2);
     }
 
@@ -236,7 +236,7 @@ public class CommmandLineHostingExtensionTest
 
         using var host = builder.Build();
         host.Should().NotBeNull();
-        await host.Invoking(async x => await x.RunCommandLineHostedAsync(TestContext.CancellationTokenSource.Token)).Should().ThrowAsync<InvalidOperationException>();
+        await host.Invoking(async x => await x.RunCommandLineHostedAsync(TestContext.CancellationToken)).Should().ThrowAsync<InvalidOperationException>();
     }
 
     [TestMethod]
@@ -256,7 +256,7 @@ public class CommmandLineHostingExtensionTest
 
         using var host = builder.Build();
         host.Should().NotBeNull();
-        var runResult = await host.RunCommandLineHostedAsync(TestContext.CancellationTokenSource.Token);
+        var runResult = await host.RunCommandLineHostedAsync(TestContext.CancellationToken);
         runResult.Should().Be(2);
     }
 }

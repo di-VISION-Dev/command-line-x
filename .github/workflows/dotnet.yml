@@ -38,7 +38,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build -p:Threshold=\"95,90,95\"
+      run: dotnet test --no-build -p:Threshold=\"95,95,100\"
     - name: Code Coverage Report
       if: always()
       run: |

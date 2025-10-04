@@ -13,14 +13,20 @@
         <PackageId>$(Company).$(AssemblyName)</PackageId>
         <!-- <PackageIcon>library.png</PackageIcon> -->
     </PropertyGroup>
-    <PropertyGroup Condition="Exists('readme.md')">
+    <PropertyGroup Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">
         <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
+	<PropertyGroup Condition="!Exists('$(MSBuildProjectDirectory)\readme.md') And Exists('$(MSBuildThisFileDirectory)Readme.md')">
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	</PropertyGroup>
 
-    <!-- <ItemGroup> -->
+	<!-- <ItemGroup> -->
         <!-- <None Include="$(MSBuildThisFileDirectory)doc/library.png" Pack="true" PackagePath="\"/> -->
     <!-- </ItemGroup> -->
-    <ItemGroup Condition="Exists('readme.md')">
+    <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">
         <None Include="readme.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
+	<ItemGroup Condition="!Exists('$(MSBuildProjectDirectory)\readme.md') And Exists('$(MSBuildThisFileDirectory)Readme.md')">
+		<None Include="$(MSBuildThisFileDirectory)Readme.md" Pack="true" PackagePath="\"/>
+	</ItemGroup>
 </Project>

@@ -48,7 +48,7 @@ public class CommandLineInvokerTest
         SetupServices<OneIntArgCommandAction>(command, true);
 
         var invoker = new CommandLineInvoker([command], _registry, _serviceProvider);
-        var commandResult = await invoker.InvokeAsync(["onearg", "42"], TestContext.CancellationTokenSource.Token);
+        var commandResult = await invoker.InvokeAsync(["onearg", "42"], TestContext.CancellationToken);
         commandResult.Should().Be(42);
     }
 

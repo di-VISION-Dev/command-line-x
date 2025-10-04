@@ -23,12 +23,24 @@ public class SyncBindingCommandLineActionTest
     {
         var command = new Command("simple")
         {
-            new Argument<int>("nonce")
+            new Argument<int>("nonce"),
+            new Option<string>("-f", ["--foo"])
         };
-        var bindingAction = new SyncBindingCommandLineAction<NoArgsCommandAction>(command, () => new());
+        var action = new NoArgsCommandAction();
+        var bindingAction = new SyncBindingCommandLineAction<NoArgsCommandAction>(command, () => action);
         bindingAction.Should().NotBeNull();
+
         var actionResult = bindingAction.Invoke(command.Parse("666"));
         actionResult.Should().Be(42);
+        action.Context.Should()
+            .NotBeNull()
+            .And.Satisfy<CommandActionContext>(context =>
+            {
+                context.UnboundSymbols.Should()
+                    .NotBeNull()
+                    .And.Contain([command.Arguments[0], command.Options[0]]);
+                context.ParseResult.Should().NotBeNull();
+            });
     }
 
     [TestMethod]
