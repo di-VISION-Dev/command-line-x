@@ -20,7 +20,7 @@ In the directory of your project execute
 dotnet add package diVISION.CommandLineX
 ```
 
-### Integrating The Library
+### Integrating The Library In Your Application
 1. Create `MyFirstAction.cs` (command action model) in your project directory:
    ```cs
     using diVISION.CommandLineX;
@@ -29,11 +29,12 @@ dotnet add package diVISION.CommandLineX
     {
         public class MyFirstAction(ILogger<MyFirstAction> logger): ICommandAction
         {
+            // injected by the host via DI
             private readonly ILogger<MyFirstAction> _logger = logger;
         
-            // do-amount argument
+            // "do-amount" argument
             public IEnumerable<int> DoAmount { get; set; } = [0];
-            // --directory option
+            // "--directory" option
             public DirectoryInfo Directory { get; set; } = new (".");
         
             public int Invoke(CommandActionContext context)
@@ -66,6 +67,7 @@ dotnet add package diVISION.CommandLineX
         })
         .ConfigureDefaults(null)
         .UseConsoleLifetime()
+        // next 2 calls initalize CommandLine hosting
         .UseCommandLine(rootCmd)
         .UseCommandWithAction<MyFirstAction>(rootCmd, new("myFirst", "Doing things")
         {
@@ -112,4 +114,4 @@ dotnet build
 ```
 
 ## Contributing
-All contributions to development and error fixing are welcome. Please always use `develop` branch for forks and pull requests, `main` is reserved for stable releases and critical vulnarability fixes only. All code changes should meet minimal code coverage requirements to be merged into `main` or `develop`, the coverage requirements are: lines - 95%, branches - 95%, methods - 100%.
+All contributions to development and error fixing are welcome. Please always use `develop` branch for forks and pull requests, `main` is reserved for stable releases and critical vulnarability fixes only. Please note: all code changes should meet minimal code coverage requirements to be merged into `main` or `develop`.
