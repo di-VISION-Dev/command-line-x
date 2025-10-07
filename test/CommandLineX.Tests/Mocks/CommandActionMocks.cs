@@ -12,13 +12,17 @@ namespace diVISION.CommandLineX.Tests.Mocks
     {
         private readonly INumberModifierService<int>? _service = service;
 
+        internal CommandActionContext? Context { get; set; }
+
         public int Invoke(CommandActionContext context)
         {
+            Context = context;
             return GetResult();
         }
 
         public Task<int> InvokeAsync(CommandActionContext context, CancellationToken cancellationToken = default)
         {
+            Context = context;
             return Task.FromResult(GetResult());
         }
 

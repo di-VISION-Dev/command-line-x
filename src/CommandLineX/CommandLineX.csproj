@@ -5,7 +5,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.1.0-rc01</Version>
+    <Version>0.1.0-rc02</Version>
+	<Description>Hosting and model binding extensions for System.CommandLine</Description>
   </PropertyGroup>
   
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
