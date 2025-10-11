@@ -111,7 +111,7 @@ public class CommandLineHostedServiceTest
         var logger = new LoggerMock<CommandLineHostedService>();
         var command = new Command("oneopt")
         {
-            new Option<string>("-o", ["--the-option"])
+            new Option<string>("--the-option", "-o")
         };
         var invoker = SetupInvoker<OneStringOptionCommandAction>(command);
         var lifetime = new HostApplicationLifetimeMock();
