@@ -101,6 +101,24 @@ namespace diVISION.CommandLineX.Tests
         }
 
         [TestMethod]
+        public void Create_binding_to_OneStringOptionCommandAction_with_string_Symbol_by_alias_given_Command_with_string_option()
+        {
+            var binder = CommandActionBinder<OneStringOptionCommandAction>.Create(new("oneopt")
+                {
+                    new Option<string>("--very-fancy-option", "--the-option", "-o")
+                }, () => new());
+            binder.Should().NotBeNull();
+            binder.TypeBindings.GetMappings().Should()
+                .NotBeEmpty()
+                .And.AllSatisfy(mapping =>
+                {
+                    mapping.Key.Name.Should().Be("--very-fancy-option");
+                    mapping.Value.Name.Should().Be("TheOption");
+                });
+            binder.TypeBindings.GetUnboundSymbols().Should().BeEmpty();
+        }
+
+        [TestMethod]
         public void Create_binding_to_OneStringOptionCommandAction_with_unbound_Symbol_given_Command_with_unaliased_string_option()
         {
             var binder = CommandActionBinder<OneStringOptionCommandAction>.Create(new("oneopt")
