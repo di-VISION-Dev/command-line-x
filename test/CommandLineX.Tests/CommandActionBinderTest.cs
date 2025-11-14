@@ -87,14 +87,32 @@ namespace diVISION.CommandLineX.Tests
         {
             var binder = CommandActionBinder<OneStringOptionCommandAction>.Create(new("oneopt")
                 {
-                    new Option<string>("-o", ["--the-option"])
+                    new Option<string>("--the-option", "-o")
                 }, () => new());
             binder.Should().NotBeNull();
             binder.TypeBindings.GetMappings().Should()
                 .NotBeEmpty()
                 .And.AllSatisfy(mapping =>
                 {
-                    mapping.Key.Name.Should().Be("-o");
+                    mapping.Key.Name.Should().Be("--the-option");
+                    mapping.Value.Name.Should().Be("TheOption");
+                });
+            binder.TypeBindings.GetUnboundSymbols().Should().BeEmpty();
+        }
+
+        [TestMethod]
+        public void Create_binding_to_OneStringOptionCommandAction_with_string_Symbol_by_alias_given_Command_with_string_option()
+        {
+            var binder = CommandActionBinder<OneStringOptionCommandAction>.Create(new("oneopt")
+                {
+                    new Option<string>("--very-fancy-option", "--the-option", "-o")
+                }, () => new());
+            binder.Should().NotBeNull();
+            binder.TypeBindings.GetMappings().Should()
+                .NotBeEmpty()
+                .And.AllSatisfy(mapping =>
+                {
+                    mapping.Key.Name.Should().Be("--very-fancy-option");
                     mapping.Value.Name.Should().Be("TheOption");
                 });
             binder.TypeBindings.GetUnboundSymbols().Should().BeEmpty();
@@ -123,14 +141,14 @@ namespace diVISION.CommandLineX.Tests
             var binder = new CommandActionBinder<ComplexArgAndOptionCommandAction>(new("argandopt")
                 {
                     new Argument<IEnumerable<Guid>>("guid-args"),
-                    new Option<FileInfo>("-f", ["--file-option"])
+                    new Option<FileInfo>("--file-option", "-f")
                 }, new());
             binder.Should().NotBeNull();
             binder.TypeBindings.GetMappings().Should()
                 .NotBeEmpty()
                 .And.Satisfy(
                     mapping => "guid-args" == mapping.Key.Name && "GuidArgs" == mapping.Value.Name,
-                    mapping => "-f" == mapping.Key.Name && "FileOption" == mapping.Value.Name
+                    mapping => "--file-option" == mapping.Key.Name && "FileOption" == mapping.Value.Name
                 );
             binder.TypeBindings.GetUnboundSymbols().Should().BeEmpty();
         }

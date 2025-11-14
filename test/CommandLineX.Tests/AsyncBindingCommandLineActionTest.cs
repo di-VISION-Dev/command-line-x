@@ -26,7 +26,7 @@ public class AsyncBindingCommandLineActionTest
         var command = new Command("simple")
         {
             new Argument<int>("nonce"),
-            new Option<string>("-f", ["--foo"])
+            new Option<string>("--foo", "-f")
         };
         
         var action = new NoArgsCommandAction();
@@ -113,7 +113,7 @@ public class AsyncBindingCommandLineActionTest
     {
         var command = new Command("oneopt")
         {
-            new Option<string>("-o", ["--the-option"])
+            new Option<string>("--the-option", "-o")
         };
         var action = new OneStringOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<OneStringOptionCommandAction>(command, () => action);
@@ -144,7 +144,7 @@ public class AsyncBindingCommandLineActionTest
         var command = new Command("argandopt")
         {
             new Argument<IEnumerable<Guid>>("guid-args"),
-            new Option<FileInfo>("-f", ["--file-option"])
+            new Option<FileInfo>("--file-option", "-f")
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
@@ -162,7 +162,7 @@ public class AsyncBindingCommandLineActionTest
         var command = new Command("argandopt")
         {
             new Argument<IEnumerable<Guid>>("guid-args"),
-            new Option<FileInfo>("-f", ["--file-option"])
+            new Option<FileInfo>("--file-option", "-f")
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);

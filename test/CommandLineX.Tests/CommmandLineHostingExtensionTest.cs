@@ -145,7 +145,7 @@ public class CommmandLineHostingExtensionTest
             .UseCommandWithAction<ComplexArgAndOptionCommandAction>(rootCommand, new("argandopt")
             {
                 new Argument<IEnumerable<Guid>>("guid-args"),
-                new Option<FileInfo>("-f", ["--file-option"])
+                new Option<FileInfo>("--file-option", "-f")
             }, false);
         builder.Should().NotBeNull();
 
@@ -180,7 +180,7 @@ public class CommmandLineHostingExtensionTest
             .UseCommandWithAction<ComplexArgAndOptionCommandAction>(rootCommand, new("argandopt")
             {
                 new Argument<IEnumerable<Guid>>("guid-args"),
-                new Option<FileInfo>("-f", ["--file-option"])
+                new Option<FileInfo>("--file-option", "-f")
             }, false);
         builder.Should().NotBeNull();
 
@@ -215,7 +215,7 @@ public class CommmandLineHostingExtensionTest
             .UseCommandWithAction<ComplexArgAndOptionCommandAction>(rootCommand, new("argandopt")
             {
                 new Argument<IEnumerable<Guid>>("guid-args"),
-                new Option<FileInfo>("-f", ["--file-option"])
+                new Option<FileInfo>("--file-option", "-f")
             }, false);
         builder.Should().NotBeNull();
 
@@ -250,7 +250,7 @@ public class CommmandLineHostingExtensionTest
             .UseCommandWithAction<ComplexArgAndOptionCommandAction>(rootCommand, new("argandopt")
             {
                 new Argument<IEnumerable<Guid>>("guid-args"),
-                new Option<FileInfo>("-f", ["--file-option"])
+                new Option<FileInfo>("--file-option", "-f")
             }, false);
         builder.Should().NotBeNull();
 

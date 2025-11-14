@@ -1,7 +1,7 @@
 # command-line-x
 ![Tool](https://img.shields.io/badge/.Net-8-lightblue) [<img src="https://img.shields.io/github/v/release/di-VISION-Dev/command-line-x" title="Latest">](../../releases/latest)
 
-[System.CommandLine](https://github.com/dotnet/command-line-api) is a really handy .Net library for parsing command line arguments passed to an application. Unfortunately some useful features available in its beta stage were removed from the library's release candidates. CommandLineX brings back some of them: **hosting extensions** and **arguments model binding** including DI.
+[System.CommandLine](https://github.com/dotnet/command-line-api) is a really handy .Net library for parsing command line arguments passed to an application. Unfortunately a couple of useful features available in its beta stage were removed from the library's release candidates. CommandLineX brings back some of them: **hosting extensions** and **arguments model binding** including DI.
 
 ## Getting Started
 ### Creating Console App
@@ -75,7 +75,7 @@ dotnet add package diVISION.CommandLineX
             {
                 Arity = new(1, 2)
             },
-            new Option<DirectoryInfo>("-d", ["--directory"])
+            new Option<DirectoryInfo>("--directory", "-d")
             {
                 Description = "Some directory to use",
                 DefaultValueFactory = (_) => new DirectoryInfo(".")

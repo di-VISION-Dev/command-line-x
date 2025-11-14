@@ -16,8 +16,8 @@
     <PropertyGroup Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">
         <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
-	<PropertyGroup Condition="!Exists('$(MSBuildProjectDirectory)\readme.md') And Exists('$(MSBuildThisFileDirectory)Readme.md')">
-		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+	<PropertyGroup Condition="!Exists('$(MSBuildProjectDirectory)\readme.md') And Exists('$(MSBuildThisFileDirectory)README.md')">
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<!-- <ItemGroup> -->
@@ -26,7 +26,7 @@
     <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\readme.md')">
         <None Include="readme.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
-	<ItemGroup Condition="!Exists('$(MSBuildProjectDirectory)\readme.md') And Exists('$(MSBuildThisFileDirectory)Readme.md')">
-		<None Include="$(MSBuildThisFileDirectory)Readme.md" Pack="true" PackagePath="\"/>
+	<ItemGroup Condition="!Exists('$(MSBuildProjectDirectory)\readme.md') And Exists('$(MSBuildThisFileDirectory)README.md')">
+		<None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 </Project>
