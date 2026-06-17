@@ -1,6 +1,6 @@
 using diVISION.CommandLineX.Binding;
 using diVISION.CommandLineX.Tests.Mocks;
-using FluentAssertions;
+using AwesomeAssertions;
 using System.CommandLine;
 
 namespace diVISION.CommandLineX.Tests;
@@ -15,7 +15,6 @@ public class AsyncBindingCommandLineActionTest
     {
         var command = new Command("simple");
         var bindingAction = new AsyncBindingCommandLineAction<NoArgsCommandAction>(command, () => new());
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse(string.Empty), TestContext.CancellationToken);
         actionResult.Should().Be(42);
     }
@@ -31,7 +30,6 @@ public class AsyncBindingCommandLineActionTest
         
         var action = new NoArgsCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<NoArgsCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
 
         var actionResult = await bindingAction.InvokeAsync(command.Parse("666"), TestContext.CancellationToken);
         actionResult.Should().Be(42);
@@ -55,7 +53,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new OneIntArgCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<OneIntArgCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("42"), TestContext.CancellationToken);
         actionResult.Should().Be(action.Answer).And.Be(42);
     }
@@ -69,7 +66,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new OneIntArgCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<OneIntArgCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("42"), TestContext.CancellationToken);
         actionResult.Should().Be(action.Answer).And.Be(0);
     }
@@ -85,7 +81,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new OneIntArgCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<OneIntArgCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
 
         await bindingAction.Invoking(async (x) => await bindingAction.InvokeAsync(command.Parse("43"), tokenSource.Token)).Should().ThrowAsync<OperationCanceledException>();
     }
@@ -100,7 +95,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new TwoPrimitiveArgsCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<TwoPrimitiveArgsCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var args = new string[] { "what's the question?", "42" };
         var actionResult = await bindingAction.InvokeAsync(command.Parse(args), TestContext.CancellationToken);
         action.TheQuestion.Should().Be(args[0]);
@@ -117,7 +111,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new OneStringOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<OneStringOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("-o whatever"), TestContext.CancellationToken);
         action.TheOption.Should().Be("whatever");
         actionResult.Should().Be(action.TheOption.Length).And.Be("whatever".Length);
@@ -132,7 +125,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new OneStringOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<OneStringOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("-o whatever"), TestContext.CancellationToken);
         action.TheOption.Should().BeEmpty();
         actionResult.Should().Be(0);
@@ -148,7 +140,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB -f testfile"), TestContext.CancellationToken);
         var file = new FileInfo("testfile");
         action.GuidArgs.Should().HaveCount(1).And.Contain(Guid.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB"));
@@ -166,7 +157,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB 43B95992-25E0-40BC-AC59-D8B3E4CB7BFD -f testfile"), TestContext.CancellationToken);
         var testfile = new FileInfo("testfile");
         action.GuidArgs.Should().HaveCount(2).And.Contain([Guid.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB"), Guid.Parse("43B95992-25E0-40BC-AC59-D8B3E4CB7BFD")]);
@@ -183,7 +173,6 @@ public class AsyncBindingCommandLineActionTest
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new AsyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = await bindingAction.InvokeAsync(command.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB 43B95992-25E0-40BC-AC59-D8B3E4CB7BFD"), TestContext.CancellationToken);
         var file = new FileInfo("testfile");
         action.GuidArgs.Should().HaveCount(2).And.Contain([Guid.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB"), Guid.Parse("43B95992-25E0-40BC-AC59-D8B3E4CB7BFD")]);
