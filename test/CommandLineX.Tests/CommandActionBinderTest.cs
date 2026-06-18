@@ -1,6 +1,6 @@
 ﻿using diVISION.CommandLineX.Binding;
 using System.CommandLine;
-using FluentAssertions;
+using AwesomeAssertions;
 using diVISION.CommandLineX.Tests.Mocks;
 
 namespace diVISION.CommandLineX.Tests

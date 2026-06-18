@@ -1,7 +1,7 @@
 using diVISION.CommandLineX.Binding;
 using diVISION.CommandLineX.Hosting;
 using diVISION.CommandLineX.Tests.Mocks;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
 

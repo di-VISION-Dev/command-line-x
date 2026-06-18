@@ -169,13 +169,9 @@ namespace diVISION.CommandLineX.Hosting
         {
             host.CheckInvocationContext();
 
-            var service = host.Services.GetRequiredService<IHostedService>();
+            var service = host.GetCommandLineHostedService();
             host.Run();
-            if (service is CommandLineHostedService hostedService)
-            {
-                return hostedService.Result;
-            }
-            return Environment.ExitCode;
+            return service.Result;
         }
 
         /// <summary>
@@ -192,14 +188,10 @@ namespace diVISION.CommandLineX.Hosting
         {
             host.CheckInvocationContext();
 
-            var service = host.Services.GetRequiredService<IHostedService>();
+            var service = host.GetCommandLineHostedService();
             await host.StartAsync(cancellationToken);
             await host.WaitForShutdownAsync(cancellationToken);
-            if (service is CommandLineHostedService hostedService)
-            {
-                return hostedService.Result;
-            }
-            return Environment.ExitCode;
+            return service.Result;
         }
 
         /// <summary>
@@ -226,7 +218,16 @@ namespace diVISION.CommandLineX.Hosting
             {
                 throw new InvalidOperationException("This host is configured to run commands in the hosted service, use RunCommandsHosted* methods");
             }
+        }
 
+        public static CommandLineHostedService GetCommandLineHostedService(this IHost host)
+        {
+            var service = host.Services.GetRequiredService<IHostedService>();
+            if (service is not CommandLineHostedService commandLineService)
+            {
+                throw new InvalidOperationException("This operation requires CommandLineHostedService, did you call IHostBuilder.UseHostedCommandInvocation?");
+            }
+            return commandLineService;
         }
     }
 }
