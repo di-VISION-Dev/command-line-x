@@ -106,6 +106,26 @@ public class CommandLineHostedServiceTest
     }
 
     [TestMethod]
+    public async Task StartAsync_setting_result_of_OneIntArgCommandAction_but_not_ExitCode_given_Command_with_int_argument_and_result_externally_modified()
+    {
+        var command = new Command("onearg")
+        {
+            new Argument<int>("answer")
+        };
+        var invoker = SetupInvoker<OneIntArgCommandAction>(command);
+        var lifetime = new HostApplicationLifetimeMock();
+        var service = new CommandLineHostedService(invoker, new CommandLineInvocationContext(["onearg", "4242"]), lifetime
+            , _serviceProvider.GetRequiredService<ILogger<CommandLineHostedService>>())
+        {
+            Result = 0
+        };
+        await service.StartAsync(TestContext.CancellationToken);
+        var finished = await lifetime.WaitForStopAsync(TestContext.CancellationToken);
+        finished.Should().BeTrue();
+        service.Result.Should().NotBe(Environment.ExitCode).And.Be(4242);
+    }
+
+    [TestMethod]
     public async Task StartAsync_logging_Exception_thrown_by_OneStringOptionCommandAction_given_Command_with_invalid_option()
     {
         var logger = new LoggerMock<CommandLineHostedService>();
@@ -128,6 +148,21 @@ public class CommandLineHostedServiceTest
                 entry.Key.Should().Be(LogLevel.Error);
                 entry.Value.Should().StartWith("Failed to invoke command line 'oneopt -o error' due to error");
             });
+    }
+
+    [TestMethod]
+    public async Task StartAsync_immediately_setting_ExitCode_to_failure_called_with_cancelled_CancellationToken()
+    {
+        var command = new Command("noarg");
+        var invoker = SetupInvoker<NoArgsCommandAction>(command, _serviceProvider.GetRequiredService<INumberModifierService<int>>());
+        var lifetime = new HostApplicationLifetimeMock();
+        var service = new CommandLineHostedService(invoker, new CommandLineInvocationContext(["noarg"]), lifetime
+            , _serviceProvider.GetRequiredService<ILogger<CommandLineHostedService>>());
+
+        var tokenSource = new CancellationTokenSource();
+        tokenSource.Cancel();
+        await service.StartAsync(tokenSource.Token);
+        service.Result.Should().Be(-1);
     }
 
     private CommandLineInvoker SetupInvoker<TAction>(Command command, params object?[]? acrionArgs)

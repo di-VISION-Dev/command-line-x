@@ -110,19 +110,8 @@ namespace diVISION.CommandLineX.Binding
         {
             foreach (var entry in _typeBindings!.GetMappings())
             {
-                entry.Value.SetValue(_action, GetSymbolValue(parseResult, entry.Key));
+                entry.Value.SetValue(_action, parseResult.GetSymbolValue(entry.Key));
             }
         }
-
-        protected static object? GetSymbolValue(ParseResult parseResult, dynamic symbol)
-        {
-            var m = parseResult.GetType().GetMethods().Where(m => m.Name == nameof(ParseResult.GetValue))
-                .Select(m => new { Method = m, Params = m.GetParameters(), Args = m.GetGenericArguments() })
-                .Where(x => 1 == x.Params.Length && 1 == x.Args.Length && x.Params[0].ParameterType.BaseType == symbol.GetType().BaseType)
-                .Select(x => x.Method).FirstOrDefault();
-            var getValue = m?.MakeGenericMethod(symbol.ValueType);
-            return getValue?.Invoke(parseResult, new object[] { symbol });
-        }
-
     }
 }
