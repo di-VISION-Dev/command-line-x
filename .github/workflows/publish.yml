@@ -11,6 +11,10 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+        packages: write
+        contents: read
+        id-token: write
 
     steps:
     - uses: actions/checkout@v5
@@ -38,8 +42,8 @@ jobs:
         NUGET_TOKEN: ${{ secrets.NUGET_PUBLISH_TOKEN }}
 
     - name: Publish Binaries to GitHub
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         files: "*.nupkg"
       env:
-        GITHUB_TOKEN: ${{ secrets.PACKAGE_WRITE_TOKEN }}
+        token: ${{ secrets.PACKAGE_WRITE_TOKEN }}
