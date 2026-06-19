@@ -1,7 +1,7 @@
 using diVISION.CommandLineX.Binding;
 using diVISION.CommandLineX.Hosting;
 using diVISION.CommandLineX.Tests.Mocks;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.CommandLine;
@@ -12,6 +12,19 @@ namespace diVISION.CommandLineX.Tests;
 [TestClass]
 public class CommmandLineHostingExtensionTest
 {
+    private class DummyHostService : IHostedService
+    {
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+    }
+
     public TestContext TestContext { get; set; }
 
     [TestMethod]
@@ -205,6 +218,24 @@ public class CommmandLineHostingExtensionTest
     }
 
     [TestMethod]
+    public void RunCommandLineHosted_throwing_Exception_given_wrong_IHostedService()
+    {
+        var rootCommand = new RootCommand();
+        var builder = Host.CreateDefaultBuilder([])
+            .UseCommandLine(rootCommand)
+            .UseHostedCommandInvocation([])
+            .UseCommandWithAction<OneIntArgCommandAction>(rootCommand, new("onearg") { new Argument<int>("answer") }, false);
+        builder.Should().NotBeNull();
+        builder.ConfigureServices(services =>
+        {
+            services.AddHostedService<DummyHostService>();
+        });
+        using var host = builder.Build();
+        host.Should().NotBeNull();
+        host.Invoking(x => x.RunCommandLineHosted()).Should().Throw<InvalidOperationException>();
+    }
+
+    [TestMethod]
     public void RunCommandLineHosted_returning_result_of_ComplexArgAndOptionCommandAction_given_RootCommand_with_matching_Command_and_arguments()
     {
         var rootCommand = new RootCommand();
@@ -237,6 +268,24 @@ public class CommmandLineHostingExtensionTest
         using var host = builder.Build();
         host.Should().NotBeNull();
         await host.Invoking(async x => await x.RunCommandLineHostedAsync(TestContext.CancellationToken)).Should().ThrowAsync<InvalidOperationException>();
+    }
+
+    [TestMethod]
+    public void RunCommandLineHostedAsync_throwing_Exception_given_wrong_IHostedService()
+    {
+        var rootCommand = new RootCommand();
+        var builder = Host.CreateDefaultBuilder([])
+            .UseCommandLine(rootCommand)
+            .UseHostedCommandInvocation([])
+            .UseCommandWithAction<OneIntArgCommandAction>(rootCommand, new("onearg") { new Argument<int>("answer") }, false);
+        builder.Should().NotBeNull();
+        builder.ConfigureServices(services =>
+        {
+            services.AddHostedService<DummyHostService>();
+        });
+        using var host = builder.Build();
+        host.Should().NotBeNull();
+        host.Invoking(async x => await x.RunCommandLineHostedAsync(TestContext.CancellationToken)).Should().ThrowAsync<InvalidOperationException>();
     }
 
     [TestMethod]

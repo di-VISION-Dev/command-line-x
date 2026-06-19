@@ -1,6 +1,6 @@
 using diVISION.CommandLineX.Binding;
 using diVISION.CommandLineX.Tests.Mocks;
-using FluentAssertions;
+using AwesomeAssertions;
 using System.CommandLine;
 
 namespace diVISION.CommandLineX.Tests;
@@ -13,7 +13,6 @@ public class SyncBindingCommandLineActionTest
     {
         var command = new Command("simple");
         var bindingAction = new SyncBindingCommandLineAction<NoArgsCommandAction>(command, () => new());
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse(string.Empty));
         actionResult.Should().Be(42);
     }
@@ -28,7 +27,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new NoArgsCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<NoArgsCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
 
         var actionResult = bindingAction.Invoke(command.Parse("666"));
         actionResult.Should().Be(42);
@@ -52,7 +50,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new OneIntArgCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<OneIntArgCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("42"));
         actionResult.Should().Be(action.Answer).And.Be(42);
     }
@@ -66,7 +63,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new OneIntArgCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<OneIntArgCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("42"));
         actionResult.Should().Be(action.Answer).And.Be(0);
     }
@@ -81,7 +77,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new TwoPrimitiveArgsCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<TwoPrimitiveArgsCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var args = new string[] { "what's the question?", "42" };
         var actionResult = bindingAction.Invoke(command.Parse(args));
         action.TheQuestion.Should().Be(args[0]);
@@ -98,7 +93,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new OneStringOptionCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<OneStringOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("-o whatever"));
         action.TheOption.Should().Be("whatever");
         actionResult.Should().Be(action.TheOption.Length).And.Be("whatever".Length);
@@ -113,7 +107,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new OneStringOptionCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<OneStringOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("-o whatever"));
         action.TheOption.Should().BeEmpty();
         actionResult.Should().Be(0);
@@ -129,7 +122,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB -f testfile"));
         var file = new FileInfo("testfile");
         action.GuidArgs.Should().HaveCount(1).And.Contain(Guid.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB"));
@@ -147,7 +139,6 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB 43B95992-25E0-40BC-AC59-D8B3E4CB7BFD -f testfile"));
         var file = new FileInfo("testfile");
         action.GuidArgs.Should().HaveCount(2).And.Contain([Guid.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB"), Guid.Parse("43B95992-25E0-40BC-AC59-D8B3E4CB7BFD")]);
@@ -164,9 +155,7 @@ public class SyncBindingCommandLineActionTest
         };
         var action = new ComplexArgAndOptionCommandAction();
         var bindingAction = new SyncBindingCommandLineAction<ComplexArgAndOptionCommandAction>(command, () => action);
-        bindingAction.Should().NotBeNull();
         var actionResult = bindingAction.Invoke(command.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB 43B95992-25E0-40BC-AC59-D8B3E4CB7BFD"));
-        var file = new FileInfo("testfile");
         action.GuidArgs.Should().HaveCount(2).And.Contain([Guid.Parse("E7AB96D2-C535-416B-959D-6DFC4F2F50AB"), Guid.Parse("43B95992-25E0-40BC-AC59-D8B3E4CB7BFD")]);
         action.FileOption.Should().BeNull();
         actionResult.Should().Be(2);
