@@ -33,8 +33,10 @@ jobs:
       uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 8.0.x
+        cache: true
+        cache-dependency-path: '**/packages.lock.json'
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore --locked-mode
     - name: Build
       run: dotnet build --no-restore
     - name: Test
@@ -42,6 +44,6 @@ jobs:
     - name: Code Coverage Report
       if: always()
       run: |
-        dotnet tool install --global dotnet-reportgenerator-globaltool
-        reportgenerator -reports:**/coverage.cobertura.xml -targetdir:TestResults -reporttypes:MarkdownSummaryGithub -title:"Code Coverage"
+        dotnet tool restore
+        dotnet reportgenerator -reports:**/coverage.cobertura.xml -targetdir:TestResults -reporttypes:MarkdownSummaryGithub -title:"Code Coverage"
         cat ./TestResults/*.md >> $GITHUB_STEP_SUMMARY
