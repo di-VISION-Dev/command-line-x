@@ -1,9 +1,9 @@
 <Project>
-    <PropertyGroup>
-        <RootNamespace>diVISION.$(MSBuildProjectName)</RootNamespace>
-        <BaseOutputPath>$(MSBuildThisFileDirectory)build</BaseOutputPath>
-        <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)build/intermed/$(MSBuildProjectName)</BaseIntermediateOutputPath>
-        <!--
+	<PropertyGroup>
+		<RootNamespace>diVISION.$(MSBuildProjectName)</RootNamespace>
+		<BaseOutputPath>$(MSBuildThisFileDirectory)build</BaseOutputPath>
+		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)build/intermed/$(MSBuildProjectName)</BaseIntermediateOutputPath>
+		<!--
         <OutDir>$(OutputPath)</OutDir>
         <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
         <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
@@ -11,9 +11,10 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         -->
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<RunSettingsFilePath>$(MSBuildThisFileDirectory)Common.runsettings</RunSettingsFilePath>
-    </PropertyGroup>
-	
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<CollectCoverage>true</CollectCoverage>
 		<CoverletOutput>$(MSBuildThisFileDirectory)TestResults/$(MSBuildProjectName)/</CoverletOutput>
